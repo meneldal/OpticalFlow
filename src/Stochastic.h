@@ -5,16 +5,11 @@
 #include "stdlib.h"
 #include "project.h"
 #include "memory.h"
+#include <type_traits>
 
 #define _Release_2DArray(X,i,length) for(i=0;i<length;i++) if(X[i]!=NULL) delete X[i]; delete []X
 
-#ifndef _abs(x)
-#define _abs(x) (x>=0)?x:-x
-#endif
-
-#ifndef PI
-#define PI 3.1415927
-#endif
+template<typename T> typename std::enable_if<std::is_signed<T>::value, T>::type _abs(T x) { return x >= 0 ? x : -x; }
 
 enum SortType{SortAscending,SortDescending};
 
@@ -366,7 +361,7 @@ int CStochastic::FindClosestPoint(T1* pPointSet,int NumPoints,int nDim,T2* Query
 	T1 MinDistance,Distance,x;
 	MinDistance=0;
 	for(j=0;j<nDim;j++)
-		MinDistance+=_abs(pPointSet[j]-QueryPoint[j]);
+		MinDistance+=abs(pPointSet[j]-QueryPoint[j]);
 	for(i=1;i<NumPoints;i++)
 	{
 		Distance=0;
