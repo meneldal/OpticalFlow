@@ -802,9 +802,8 @@ bool Image<T>::saveImage(const char *filename) const
 template <class T>
 bool Image<T>::saveImage(ofstream& myfile) const
 {
-	char type[16];
-	sprintf(type,"%s",typeid(T).name());
-	myfile.write(type,16);
+	uint32_t size= sizeof(T);
+	myfile.write((char *)&size,4);
 	myfile.write((char *)&imWidth,sizeof(int));
 	myfile.write((char *)&imHeight,sizeof(int));
 	myfile.write((char *)&nChannels,sizeof(int));
@@ -830,29 +829,13 @@ bool Image<T>::loadImage(const char *filename)
 template <class T>
 bool Image<T>::loadImage(ifstream& myfile)
 {
-	char type[16];
-	myfile.read(type,16);
-#ifdef _LINUX_MAC
-	if(strcasecmp(type,"uint16")==0)
-		sprintf(type,"unsigned short");
-	if(strcasecmp(type,"uint32")==0)
-		sprintf(type,"unsigned int");
-	if(strcasecmp(type,typeid(T).name())!=0)
+	uint32_t typeSize;
+	myfile.read((char*)&typeSize, 4);
+	if(typeSize!=sizeof(T))
 	{
-		cout<<"The type of the image is different from the type of the object!"<<endl;
+		cout << "The type of the image is different from the type of the object!" << endl;
 		return false;
 	}
-#else
-	if(strcmpi(type,"uint16")==0)
-		sprintf(type,"unsigned short");
-	if(strcmpi(type,"uint32")==0)
-		sprintf(type,"unsigned int");
-	if(strcmpi(type,typeid(T).name())!=0)
-	{
-		cout<<"The type of the image is different from the type of the object!"<<endl;
-		return false;
-	}
-#endif
 	int width,height,nchannels;
 	myfile.read((char *)&width,sizeof(int));
 	myfile.read((char *)&height,sizeof(int));
