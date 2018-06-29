@@ -3,6 +3,7 @@
 
 #include <cv.hpp>
 #include <highgui.h>
+#include <type_traits>
 
 class ImageIO
 {
@@ -22,7 +23,7 @@ template <class T>
 bool ImageIO::loadImage(const char *filename, T *&pImagePlane, int &width, int &height, int &nchannels)
 {
 	cv::Mat im = cv::imread(filename);
-	if(im.data == NULL) // if allocation fails
+	if(im.data == nullptr) // if allocation fails
 		return false;
 	if(im.type()!= CV_8UC1 && im.type()!=CV_8UC3 && im.type()!=CV_8UC4) // we only support three types of image information for now
 		return false;
@@ -31,7 +32,7 @@ bool ImageIO::loadImage(const char *filename, T *&pImagePlane, int &width, int &
 	nchannels = im.channels();
 	pImagePlane = new T[width*height*nchannels];
 
-	if(typeid(T) == typeid(unsigned char))
+	if constexpr(std::is_same_v<T, unsigned char>)
 	{
 		for(int i = 0;i<height;i++)
 			memcpy(pImagePlane+i*im.step,im.data+i*im.step,width*nchannels);
@@ -39,9 +40,7 @@ bool ImageIO::loadImage(const char *filename, T *&pImagePlane, int &width, int &
 	}
 
 	// check whether the type is float point
-	bool IsFloat=false;
-	if(typeid(T)==typeid(double) || typeid(T)==typeid(float) || typeid(T)==typeid(long double))
-		IsFloat=true;
+	constexpr bool IsFloat = std::is_floating_point_v<T>;
 	
 	for(int i =0;i<height;i++)
 	{
@@ -49,7 +48,7 @@ bool ImageIO::loadImage(const char *filename, T *&pImagePlane, int &width, int &
 		int offset2 = i*im.step;
 		for(int j=0;j<im.step;j++)
 		{
-			if(IsFloat)
+			if constexpr(IsFloat)
 				pImagePlane[offset1+j] = (T)im.data[offset2+j]/255;
 			else
 				pImagePlane[offset1+j] = im.data[offset2+j];
@@ -73,9 +72,7 @@ bool ImageIO::saveImage(const char* filename,const T* pImagePlane,int width,int 
 			return false;
 	}
 	// check whether the type is float point
-	bool IsFloat=false;
-	if(typeid(T)==typeid(double) || typeid(T)==typeid(float) || typeid(T)==typeid(long double))
-		IsFloat=true;
+	constexpr bool IsFloat = std::is_floating_point_v<T>;
 
 	T Max,Min;
 	int nElements = width*height*nchannels;
@@ -102,7 +99,7 @@ bool ImageIO::saveImage(const char* filename,const T* pImagePlane,int width,int 
 			}
 			break;
 	}
-	if(typeid(T) == typeid(unsigned char) && imtype == standard)
+	if(std::is_same_v<T, unsigned char> && imtype == standard)
 	{
 		for(int i = 0;i<height;i++)
 			memcpy(im.data+i*im.step,pImagePlane+i*im.step,width*nchannels);
@@ -117,7 +114,7 @@ bool ImageIO::saveImage(const char* filename,const T* pImagePlane,int width,int 
 			{
 				switch(imtype){
 					case standard:
-						if(IsFloat)
+						if constexpr(IsFloat)
 							im.data[offset2+j] = pImagePlane[offset1+j]*255;
 						else
 							im.data[offset2+j] = __max(__min(pImagePlane[offset1+j],255),0);
