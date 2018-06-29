@@ -70,7 +70,7 @@ bool ImageIO::saveImage(const char* filename,const T* pImagePlane,int width,int 
 			im.create(height,width,CV_8UC3);
 			break;
 		default:
-			return -1;
+			return false;
 	}
 	// check whether the type is float point
 	bool IsFloat=false;
