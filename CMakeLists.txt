@@ -15,6 +15,7 @@ include_directories ("${PROJECT_SOURCE_DIR}/src")
 # Add source to this project's executable.
 
 
-add_subdirectory (src)
+add_subdirectory(src)
+add_subdirectory(demo)
 
 # TODO: Add tests and install targets if needed.
