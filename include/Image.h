@@ -6,7 +6,6 @@
 #include "ImageProcessing.h"
 #include <iostream>
 #include <fstream>
-#include <typeinfo>
 #include "Vector.h"
 #include "Stochastic.h"
 
