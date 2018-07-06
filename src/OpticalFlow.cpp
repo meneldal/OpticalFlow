@@ -1198,4 +1198,5 @@ bool OpticalFlow::showFlow(const DImage& flow,const char* filename)
 	for(int i = 0;i<flow.npixels(); i++)
 		foo[i] = (flow[i]-Min)/(Max-Min)*255;
 	foo.imwrite(filename);
+	return true;
 }
