@@ -6,8 +6,6 @@
 #include "memory.h"
 #include <type_traits>
 
-#define _Release_2DArray(X,i,length) for(i=0;i<length;i++) if(X[i]!=NULL) delete X[i]; delete []X
-
 template<typename T> typename std::enable_if<std::is_signed<T>::value, T>::type _abs(T x) { return x >= 0 ? x : -x; }
 
 enum SortType{SortAscending,SortDescending};
@@ -36,10 +34,10 @@ public:
 	template <class T> static T Min(int NumData, T* pData1,T* pData2);
 	template <class T> static T Max(int NumData ,T* pData);
 	template <class T> static int FindMax(int NumData,T* pData);
-	template <class T1,class T2> static void ComputeVectorMean(int Dim,int NumData,T1* pData,T2* pMean,double* pWeight=NULL);
-	template <class T1,class T2> static void ComputeMeanCovariance(int Dim,int NumData,T1* pData,T2* pMean,T2* pCovarance,double* pWeight=NULL);
+	template <class T1,class T2> static void ComputeVectorMean(int Dim,int NumData,T1* pData,T2* pMean,double* pWeight=nullptr);
+	template <class T1,class T2> static void ComputeMeanCovariance(int Dim,int NumData,T1* pData,T2* pMean,T2* pCovarance,double* pWeight=nullptr);
 	template <class T1,class T2> static double VectorSquareDistance(int Dim,T1* pVector1,T2* pVector2);
-	template <class T1> static void KMeanClustering(int Dim,int NumData,int NumClusters,T1* pData,int *pPartition,double** pClusterMean=NULL,int MaxIterationNum=10,int MinClusterSampleNumber=2);
+	template <class T1> static void KMeanClustering(int Dim,int NumData,int NumClusters,T1* pData,int *pPartition,double** pClusterMean=nullptr,int MaxIterationNum=10,int MinClusterSampleNumber=2);
 	template <class T> static double norm(T* X,int Dim);
 	template <class T1,class T2> static int FindClosestPoint(T1* pPointSet,int NumPoints,int nDim,T2* QueryPoint);
 	template <class T1,class T2> static void GaussianFiltering(T1* pSrcArray,T2* pDstArray,int NumPoints,int nChannels,int size,double sigma);
@@ -174,7 +172,7 @@ void CStochastic::ComputeMeanCovariance(int Dim,int NumData,T1* pData,T2* pMean,
 	
 	bool IsWeightLoaded=false;
 	double Sum;
-	if(pWeight!=NULL)
+	if(pWeight!=nullptr)
 		IsWeightLoaded=true;
 
 	// compute mean first
@@ -236,7 +234,7 @@ void CStochastic::ComputeVectorMean(int Dim,int NumData,T1* pData,T2* pMean,doub
 	memset(pMean,0,sizeof(T2)*Dim);
 	bool IsWeightLoaded;
 	double Sum;
-	if(pWeight=NULL)
+	if(pWeight=nullptr)
 		IsWeightLoaded=false;
 	else
 		IsWeightLoaded=true;
@@ -332,7 +330,7 @@ _CStochastic_KMeanClustering_InitializePartition:
 		}
 	}
 	// output the final partition if necessary
-	if(pClusterMean!=NULL)
+	if(pClusterMean!=nullptr)
 		for(i=0;i<NumClusters;i++)
 			for(l=0;l<Dim;l++)
 				pClusterMean[i][l]=pCenters[i][l];

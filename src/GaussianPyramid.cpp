@@ -3,12 +3,12 @@
 
 GaussianPyramid::GaussianPyramid(void)
 {
-	ImPyramid=NULL;
+	ImPyramid=nullptr;
 }
 
 GaussianPyramid::~GaussianPyramid(void)
 {
-	if(ImPyramid!=NULL)
+	if(ImPyramid!=nullptr)
 		delete []ImPyramid;
 }
 
@@ -23,7 +23,7 @@ GaussianPyramid::~GaussianPyramid(void)
 		ratio=0.75;
 	// first decide how many levels
 	nLevels=log((double)minWidth/image.width())/log(ratio);
-	if(ImPyramid!=NULL)
+	if(ImPyramid!=nullptr)
 		delete []ImPyramid;
 	ImPyramid=new DImage[nLevels];
 	ImPyramid[0].copyData(image);
@@ -47,13 +47,13 @@ void GaussianPyramid::ConstructPyramid(const DImage &image, double ratio, int mi
 	if(ratio>0.98 || ratio<0.4)
 		ratio=0.75;
 	// first decide how many levels
-	nLevels=log((double)minWidth/image.width())/log(ratio);
-	if(ImPyramid!=NULL)
+	nLevels = static_cast<int>(log((double)minWidth / image.width()) / log(ratio));
+	if(ImPyramid!=nullptr)
 		delete []ImPyramid;
 	ImPyramid=new DImage[nLevels];
 	ImPyramid[0].copyData(image);
 	double baseSigma=(1/ratio-1);
-	int n=log(0.25)/log(ratio);
+	int n = static_cast<int>(log(0.25) / log(ratio));
 	double nSigma=baseSigma*n;
 	for(int i=1;i<nLevels;i++)
 	{
@@ -61,12 +61,12 @@ void GaussianPyramid::ConstructPyramid(const DImage &image, double ratio, int mi
 		if(i<=n)
 		{
 			double sigma=baseSigma*i;
-			image.GaussianSmoothing(foo,sigma,sigma*3);
+			image.GaussianSmoothing(foo,sigma,static_cast<int>(sigma*3));
 			foo.imresize(ImPyramid[i],pow(ratio,i));
 		}
 		else
 		{
-			ImPyramid[i-n].GaussianSmoothing(foo,nSigma,nSigma*3);
+			ImPyramid[i-n].GaussianSmoothing(foo,nSigma, static_cast<int>(nSigma * 3));
 			double rate=(double)pow(ratio,i)*image.width()/foo.width();
 			foo.imresize(ImPyramid[i],rate);
 		}
@@ -79,12 +79,12 @@ void GaussianPyramid::ConstructPyramidLevels(const DImage &image, double ratio, 
 	if(ratio>0.98 || ratio<0.4)
 		ratio=0.75;
 	nLevels = _nLevels;
-	if(ImPyramid!=NULL)
+	if(ImPyramid!=nullptr)
 		delete []ImPyramid;
 	ImPyramid=new DImage[nLevels];
 	ImPyramid[0].copyData(image);
 	double baseSigma=(1/ratio-1);
-	int n=log(0.25)/log(ratio);
+	int n = static_cast<int>(log(0.25) / log(ratio));
 	double nSigma=baseSigma*n;
 	for(int i=1;i<nLevels;i++)
 	{
@@ -92,12 +92,12 @@ void GaussianPyramid::ConstructPyramidLevels(const DImage &image, double ratio, 
 		if(i<=n)
 		{
 			double sigma=baseSigma*i;
-			image.GaussianSmoothing(foo,sigma,sigma*3);
+			image.GaussianSmoothing(foo,sigma,static_cast<int>(sigma*3));
 			foo.imresize(ImPyramid[i],pow(ratio,i));
 		}
 		else
 		{
-			ImPyramid[i-n].GaussianSmoothing(foo,nSigma,nSigma*3);
+			ImPyramid[i-n].GaussianSmoothing(foo,nSigma,static_cast<int>(nSigma*3));
 			double rate=(double)pow(ratio,i)*image.width()/foo.width();
 			foo.imresize(ImPyramid[i],rate);
 		}

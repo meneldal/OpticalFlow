@@ -20,7 +20,7 @@ public:
 	GaussianMixture()
 	{
 		nChannels = 0;
-		alpha = sigma = beta = sigma_square = beta_square = NULL;
+		alpha = sigma = beta = sigma_square = beta_square = nullptr;
 	}
 	GaussianMixture(int _nChannels)
 	{
@@ -88,7 +88,7 @@ public:
 			delete []sigma_square;
 		if(!beta_square)
 			delete []beta_square;
-		alpha = sigma = beta = sigma_square = beta_square = NULL;
+		alpha = sigma = beta = sigma_square = beta_square = nullptr;
 	}
 	void reset()
 	{

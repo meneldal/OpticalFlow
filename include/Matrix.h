@@ -19,7 +19,7 @@ private:
 	static bool IsDispInfo;
 public:
 	Matrix(void);
-	Matrix(int _nrow,int _ncol,double* data=NULL);
+	Matrix(int _nrow,int _ncol,double* data=nullptr);
 	Matrix(const Matrix<T>& matrix);
 	~Matrix(void);
 	void releaseData();
@@ -105,7 +105,7 @@ template<class T>
 Matrix<T>::Matrix(void)
 {
 	nRow=nCol=0;
-	pData=NULL;
+	pData=nullptr;
 }
 
 template<class T>
@@ -114,7 +114,7 @@ Matrix<T>::Matrix(int nrow,int ncol,double* data)
 	nRow=nrow;
 	nCol=ncol;
 	pData=new T[nRow*nCol];
-	if(data==NULL)
+	if(data==nullptr)
 		memset(pData,0,sizeof(T)*nRow*nCol);
 	else
 		memcpy(pData,data,sizeof(T)*nRow*nCol);
@@ -124,7 +124,7 @@ template<class T>
 Matrix<T>::Matrix(const Matrix<T>& matrix)
 {
 	nRow=nCol=0;
-	pData=NULL;
+	pData=nullptr;
 	copyData(matrix);
 }
 
@@ -137,9 +137,9 @@ Matrix<T>::~Matrix(void)
 template<class T>
 void Matrix<T>::releaseData()
 {
-	if(pData!=NULL)
+	if(pData!=nullptr)
 		delete pData;
-	pData=NULL;
+	pData=nullptr;
 	nRow=nCol=0;
 }
 
@@ -174,7 +174,7 @@ bool Matrix<T>::dimcheck(const Matrix<T>& matrix) const
 template<class T>
 void Matrix<T>::reset()
 {
-	if(pData!=NULL)
+	if(pData!=nullptr)
 		memset(pData,0,sizeof(T)*nRow*nCol);
 }
 
@@ -331,7 +331,7 @@ void Matrix<T>::fromVector(const Vector<T>&vect)
 template<class T>
 double Matrix<T>::norm2() const
 {
-	if(pData==NULL)
+	if(pData==nullptr)
 		return 0;
 	double temp=0;
 	for(int i=0;i<nCol*nRow;i++)
@@ -529,7 +529,7 @@ bool Matrix<T>::readMatrix(QFile &file)
 template<class T>
 void Matrix<T>::readMatrix(const mxArray* prhs)
 {
-	if(pData!=NULL)
+	if(pData!=nullptr)
 		delete pData;
 	int nElements = mxGetNumberOfDimensions(prhs);
 	if(nElements>2)

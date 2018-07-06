@@ -13,7 +13,7 @@ protected:
 	T* pData;
 public:
 	Vector(void);
-	Vector(int ndim,const T *data=NULL);
+	Vector(int ndim,const T *data=nullptr);
 	Vector(const Vector<T>& vect);
 	~Vector(void);
 	void releaseData();
@@ -120,7 +120,7 @@ template <class T>
 Vector<T>::Vector(void)
 {
 	nDim=0;
-	pData=NULL;
+	pData=nullptr;
 }
 
 template <class T>
@@ -128,7 +128,7 @@ Vector<T>::Vector(int ndim, const T *data)
 {
 	nDim=ndim;
 	pData=new T[nDim];
-	if(data!=NULL)
+	if(data!=nullptr)
 		memcpy(pData,data,sizeof(T)*nDim);
 	else
 		memset(pData,0,sizeof(T)*nDim);
@@ -138,7 +138,7 @@ template <class T>
 Vector<T>::Vector(const Vector& vect)
 {
 	nDim=0;
-	pData=NULL;
+	pData=nullptr;
 	copyData(vect);
 }
 
@@ -151,9 +151,9 @@ Vector<T>::~Vector(void)
 template <class T>
 void Vector<T>::releaseData()
 {
-	if(pData!=NULL)
+	if(pData!=nullptr)
 		delete pData;
-	pData=NULL;
+	pData=nullptr;
 	nDim=0;
 }
 
@@ -192,7 +192,7 @@ void Vector<T>::dimcheck(const Vector &vect) const
 template <class T>
 void Vector<T>::reset()
 {
-	if(pData!=NULL)
+	if(pData!=nullptr)
 		memset(pData,0,sizeof(T)*nDim);
 }
 
@@ -432,7 +432,7 @@ bool Vector::readVector(QFile &file)
 template <class T>
 void Vector<T>::readVector(const mxArray* prhs)
 {
-	if(pData!=NULL)
+	if(pData!=nullptr)
 		delete pData;
 	int nElements = mxGetNumberOfDimensions(prhs);
 	if(nElements>2)

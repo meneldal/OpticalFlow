@@ -33,7 +33,7 @@ double CStochastic::UniformSampling()
 
 int CStochastic::UniformSampling(int R)
 {
-	int Index=(double)UniformSampling()*R;
+	int Index=static_cast<int>((double)UniformSampling()*R);
 	if(Index>R-1)
 		Index=R-1;
 	return Index;

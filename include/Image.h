@@ -453,7 +453,7 @@ typedef Image<double> DImage;
 template <class T>
 Image<T>::Image()
 {
-	pData=NULL;
+	pData=nullptr;
 	imWidth=imHeight=nChannels=nPixels=nElements=0;
 	IsDerivativeImage=false;
 }
@@ -468,7 +468,7 @@ Image<T>::Image(int width,int height,int nchannels)
 	imHeight=height;
 	nChannels=nchannels;
 	computeDimension();
-	pData=NULL;
+	pData=nullptr;
 	pData=new T[nElements];
 	if(nElements>0)
 		memset(pData,0,sizeof(T)*nElements);
@@ -478,7 +478,7 @@ Image<T>::Image(int width,int height,int nchannels)
 template <class T>
 Image<T>::Image(const T& value,int _width,int _height,int _nchannels)
 {
-	pData=NULL;
+	pData=nullptr;
 	allocate(_width,_height,_nchannels);
 	setValue(value);
 }
@@ -487,7 +487,7 @@ Image<T>::Image(const T& value,int _width,int _height,int _nchannels)
 //template <class T>
 //Image<T>::Image(const QImage& image)
 //{
-//	pData=NULL;
+//	pData=nullptr;
 //	imread(image);
 //}
 #endif
@@ -500,7 +500,7 @@ void Image<T>::allocate(int width,int height,int nchannels)
 	imHeight=height;
 	nChannels=nchannels;
 	computeDimension();
-	pData=NULL;
+	pData=nullptr;
 	
 	if(nElements>0)
 	{
@@ -525,7 +525,7 @@ template <class T>
 Image<T>::Image(const Image<T>& other)
 {
 	imWidth=imHeight=nChannels=nElements=0;
-	pData=NULL;
+	pData=nullptr;
 	copyData(other);
 }
 
@@ -535,7 +535,7 @@ Image<T>::Image(const Image<T>& other)
 template <class T>
 Image<T>::~Image()
 {
-	if(pData!=NULL)
+	if(pData!=nullptr)
 		delete []pData;
 }
 
@@ -545,9 +545,9 @@ Image<T>::~Image()
 template <class T>
 void Image<T>::clear()
 {
-	if(pData!=NULL)
+	if(pData!=nullptr)
 		delete []pData;
-	pData=NULL;
+	pData=nullptr;
 	imWidth=imHeight=nChannels=nPixels=nElements=0;
 }
 
@@ -557,7 +557,7 @@ void Image<T>::clear()
 template <class T>
 void Image<T>::reset()
 {
-	if(pData!=NULL)
+	if(pData!=nullptr)
 		memset(pData,0,sizeof(T)*nElements);
 }
 
@@ -592,9 +592,9 @@ void Image<T>::copyData(const Image<T>& other)
 	if(nElements!=other.nElements)
 	{
 		nElements=other.nElements;		
-		if(pData!=NULL)
+		if(pData!=nullptr)
 			delete []pData;
-		pData=NULL;
+		pData=nullptr;
 		pData=new T[nElements];
 	}
 	if(nElements>0)
@@ -615,7 +615,7 @@ void Image<T>::copy(const Image<T1>& other)
 	IsDerivativeImage=other.isDerivativeImage();
 	colorType = other.colortype();
 
-	pData=NULL;
+	pData=nullptr;
 	pData=new T[nElements];
 	const T1*& srcData=other.data();
 	for(int i=0;i<nElements;i++)
@@ -705,7 +705,7 @@ void Image<T>::moveto(Image<T1>& image,int x0,int y0,int width,int height)
 template <class T>
 bool Image<T>::imresize(double ratio)
 {
-	if(pData==NULL)
+	if(pData==nullptr)
 		return false;
 
 	T* pDstData;

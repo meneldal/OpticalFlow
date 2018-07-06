@@ -647,7 +647,7 @@ void ImageProcessing::generate2DGaussian(T*& pImage, int wsize, double sigma)
 		sigma=wsize/2;
 	double alpha=1/(2*sigma*sigma);
 	int winlength=wsize*2+1;
-	if(pImage==NULL)
+	if(pImage==nullptr)
 		pImage=new T[winlength*winlength];
 	double total = 0;
 	for(int i=-wsize;i<=wsize;i++)
@@ -671,7 +671,7 @@ void ImageProcessing::generate1DGaussian(T*& pImage, int wsize, double sigma)
 		sigma=wsize/2;
 	double alpha=1/(2*sigma*sigma);
 	int winlength=wsize*2+1;
-	if(pImage==NULL)
+	if(pImage==nullptr)
 		pImage=new T[winlength];
 	double total = 0;
 	for(int i=-wsize;i<=wsize;i++)
