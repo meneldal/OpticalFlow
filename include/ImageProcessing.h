@@ -20,7 +20,7 @@ public:
 public:
 	// basic functions
 	template <class T>
-	static inline T EnforceRange(const T& x,const int& MaxValue) {return __min(__max(x,0),MaxValue-1);};
+	static inline T EnforceRange(const T& x,const int& MaxValue) {return std::min(std::max(x,(T)0),(T)(MaxValue-1));};
 
 	//---------------------------------------------------------------------------------
 	// function to interpolate the image plane
@@ -130,8 +130,8 @@ inline void ImageProcessing::BilinearInterpolate(const T1* pImage,int width,int 
 	xx=x;
 	yy=y;
 	double dx,dy,s;
-	dx=__max(__min(x-xx,1),0);
-	dy=__max(__min(y-yy,1),0);
+	dx = std::max(std::min(x - xx, 1.0), 0.0);
+	dy = std::max(std::min(y - yy, 1.0), 0.0);
 
 	for(m=0;m<=1;m++)
 		for(n=0;n<=1;n++)
@@ -152,8 +152,8 @@ inline T1 ImageProcessing::BilinearInterpolate(const T1* pImage,int width,int he
 	xx=x;
 	yy=y;
 	double dx,dy,s;
-	dx=__max(__min(x-xx,1),0);
-	dy=__max(__min(y-yy,1),0);
+	dx = std::max(std::min(x - xx, 1.0), 0.0);
+	dy = std::max(std::min(y - yy, 1.0), 0.0);
 
 	T1 result=0;
 	for(m=0;m<=1;m++)
@@ -179,8 +179,8 @@ inline void ImageProcessing::BilinearInterpolate_transpose(const T1* pInput,int 
 	xx=x;
 	yy=y;
 	double dx,dy,s;
-	dx=__max(__min(x-xx,1),0);
-	dy=__max(__min(y-yy,1),0);
+	dx = std::max(std::min(x - xx, 1.0), 0.0);
+	dy = std::max(std::min(y - yy, 1.0), 0.0);
 
 	for(m=0;m<=1;m++)
 		for(n=0;n<=1;n++)

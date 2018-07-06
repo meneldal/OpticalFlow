@@ -1166,8 +1166,8 @@ bool OpticalFlow::SaveOpticalFlow(const DImage& flow, const char* filename)
 	foo.allocate(flow);
 	for(int i =0;i<flow.npixels();i++)
 	{
-		foo.data()[i*2] = (__min(__max(flow.data()[i*2],-200),200)+200)*160;
-		foo.data()[i*2+1] = (__min(__max(flow.data()[i*2+1],-200),200)+200)*160;
+		foo.data()[i*2] = (min(max(flow.data()[i*2],-200.0),200.0)+200)*160;
+		foo.data()[i*2+1] = (min(max(flow.data()[i*2+1],-200.0),200.0)+200)*160;
 	}
 	return foo.saveImage(filename);
 }
@@ -1178,8 +1178,8 @@ bool OpticalFlow::SaveOpticalFlow(const DImage& flow,ofstream& myfile)
 	foo.allocate(flow);
 	for(int i =0;i<flow.npixels();i++)
 	{
-		foo.data()[i*2] = (__min(__max(flow.data()[i*2],-200),200)+200)*160;
-		foo.data()[i*2+1] = (__min(__max(flow.data()[i*2+1],-200),200)+200)*160;
+		foo.data()[i*2] = (min(max(flow.data()[i*2],-200.0),200.0)+200)*160;
+		foo.data()[i*2+1] = (min(max(flow.data()[i*2+1],-200.0),200.0)+200)*160;
 	}
 	return foo.saveImage(myfile);
 }

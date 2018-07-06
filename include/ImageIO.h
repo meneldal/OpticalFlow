@@ -82,20 +82,20 @@ bool ImageIO::saveImage(const char* filename,const T* pImagePlane,int width,int 
 		case derivative:
 			// find the max of the absolute value
 			Max = pImagePlane[0];
-			if(!IsFloat)
+			if constexpr(!IsFloat)
 				for(int i = 0;i<nElements;i++)
-					Max = __max(Max,abs(pImagePlane[i]));
+					Max = std::max<T>(Max,std::abs(pImagePlane[i]));
 			else
 				for(int i=0;i<nElements;i++)
-					Max = __max(Max,fabs((double)pImagePlane[i]));
+					Max = std::max<T>(Max,std::abs(pImagePlane[i]));
 			Max*=2;
 			break;
 		case normalized:
 			Max = Min = pImagePlane[0];
 			for(int i = 0;i<nElements;i++)
 			{
-				Max = __max(Max,pImagePlane[i]);
-				Min = __min(Min,pImagePlane[i]);
+				Max = std::max(Max,pImagePlane[i]);
+				Min = std::min(Min,pImagePlane[i]);
 			}
 			break;
 	}
@@ -117,11 +117,11 @@ bool ImageIO::saveImage(const char* filename,const T* pImagePlane,int width,int 
 						if constexpr(IsFloat)
 							im.data[offset2+j] = pImagePlane[offset1+j]*255;
 						else
-							im.data[offset2+j] = __max(__min(pImagePlane[offset1+j],255),0);
+							im.data[offset2+j] = std::max<T>(std::min<T>(pImagePlane[offset1+j],(T)255),(T)0);
 						break;
 					case derivative:
 						
-						if(IsFloat)
+						if constexpr(IsFloat)
 							im.data[offset2+j] = (double)(pImagePlane[offset1+j]/Max+0.5)*255;
 						else
 							im.data[offset2+j] = ((double)pImagePlane[offset1+j]/Max+0.5)*255;
@@ -244,17 +244,17 @@ bool ImageIO::writeImage(const QString& filename, const T*& pImagePlane,int widt
 			for(int i=0;i<nPixels;i++)
 			{
 				if(IsFloat)
-					_Max=__max(_Max,fabs((double)pImagePlane[i]));
+					_Max=max(_Max,fabs((double)pImagePlane[i]));
 				else
-					_Max=__max(_Max,abs(pImagePlane[i]));
+					_Max=max(_Max,abs(pImagePlane[i]));
 			}
 			break;
 		case normalized:
 			_Min=_Max=pImagePlane[0];
 			for(int i=1;i<nElements;i++)
 			{
-				_Min=__min(_Min,pImagePlane[i]);
-				_Max=__max(_Max,pImagePlane[i]);
+				_Min=min(_Min,pImagePlane[i]);
+				_Max=max(_Max,pImagePlane[i]);
 			}
 			break;
 	}
@@ -321,9 +321,9 @@ unsigned char ImageIO::convertPixel(const T& value,bool IsFloat,ImageType type,T
 	switch(type){
 		case standard:
 			if(IsFloat)
-				return __max(__min(value*255,255),0);
+				return max(min(value*255,255),0);
 			else
-				return __max(__min(value,255),0);
+				return max(min(value,255),0);
 			break;
 		case derivative:
 			return (double)((double)value/_Max+1)/2*255;

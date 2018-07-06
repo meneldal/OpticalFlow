@@ -1,4 +1,3 @@
-#include "project.h"
 #include "Image.h"
 #include "OpticalFlow.h"
 #include <iostream>

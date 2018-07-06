@@ -2,6 +2,7 @@
 #include "time.h"
 #include "stdlib.h"
 #include "stdio.h"
+#include <algorithm>
 
 CStochastic::CStochastic(void)
 {
@@ -102,6 +103,6 @@ double CStochastic::entropy(double* pDensity,int n)
 	double result=0;
 	int i;
 	for(i=0;i<n;i++)
-		result-=log(__max(pDensity[i],1E-6))*pDensity[i];
+		result-=log(std::max(pDensity[i],1E-6))*pDensity[i];
 	return result;
 }

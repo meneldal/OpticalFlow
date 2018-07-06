@@ -3,7 +3,6 @@
 
 #include "math.h"
 #include "stdlib.h"
-#include "project.h"
 #include "memory.h"
 #include <type_traits>
 
@@ -126,7 +125,7 @@ T CStochastic::Min(int NumData,T* pData)
 	int i;
 	T result=pData[0];
 	for(i=1;i<NumData;i++)
-		result=__min(result,pData[i]);
+		result=std::min(result,pData[i]);
 	return result;
 }
 
@@ -136,7 +135,7 @@ T CStochastic::Min(int NumData,T* pData1,T* pData2)
 	int i;
 	T result=pData1[0]+pData2[0];
 	for(i=1;i<NumData;i++)
-		result=__min(result,pData1[i]+pData2[i]);
+		result=std::min(result,pData1[i]+pData2[i]);
 	return result;
 }
 
@@ -146,7 +145,7 @@ T CStochastic::Max(int NumData,T* pData)
 	int i;
 	T result=pData[0];
 	for(i=1;i<NumData;i++)
-		result=__max(result,pData[i]);
+		result=std::max(result,pData[i]);
 	return result;
 }
 
@@ -394,7 +393,7 @@ void CStochastic::GaussianFiltering(T1* pSrcArray,T2* pDstArray,int NumPoints,in
 			for(j=-size;j<=size;j++)
 			{
 				u=i+j;
-				u=__max(__min(u,NumPoints-1),0);
+				u=std::max(std::min(u,NumPoints-1),0);
 				temp+=pSrcArray[u*nChannels+l]*pGaussian[j+size];
 			}
 			pDstArray[i*nChannels+l]=temp;
