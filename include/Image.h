@@ -31,14 +31,14 @@ protected:
 	bool IsDerivativeImage;
 	color_type colorType;
 public:
-	Image(void);
+	Image();
 	Image(int width,int height,int nchannels=1);
 	Image(const T& value,int _width,int _height,int _nchannels=1);
 	Image(const Image<T>& other);
-	~Image(void);
-	virtual Image<T>& operator=(const Image<T>& other);
+	~Image();
+	Image<T>& operator=(const Image<T>& other);
 
-	virtual inline void computeDimension(){nPixels=imWidth*imHeight;nElements=nPixels*nChannels;};
+	virtual void computeDimension(){nPixels=imWidth*imHeight;nElements=nPixels*nChannels;};
 
 	virtual void allocate(int width,int height,int nchannels=1);
 	
@@ -69,20 +69,20 @@ public:
 	void im2double();
 
 	// function to access the member variables
-	inline const T& operator [] (int index) const {return pData[index];};
-	inline T& operator[](int index) {return pData[index];};
+	const T& operator [] (int index) const {return pData[index];};
+	T& operator[](int index) {return pData[index];};
 
-	inline T*& data(){return pData;};
-	inline const T*& data() const{return (const T*&)pData;};
-	inline int width() const {return imWidth;};
-	inline int height() const {return imHeight;};
-	inline int nchannels() const {return nChannels;};
-	inline int npixels() const {return nPixels;};
-	inline int nelements() const {return nElements;};
-	inline bool isDerivativeImage() const {return IsDerivativeImage;};
-	inline color_type colortype() const{return colorType;};
+	T*& data(){return pData;};
+	const T*& data() const{return (const T*&)pData;};
+	int width() const {return imWidth;};
+	int height() const {return imHeight;};
+	int nchannels() const {return nChannels;};
+	int npixels() const {return nPixels;};
+	int nelements() const {return nElements;};
+	bool isDerivativeImage() const {return IsDerivativeImage;};
+	color_type colortype() const{return colorType;};
 
-	bool IsFloat () const;
+	static constexpr bool IsFloat ();
 	bool IsEmpty() const {if(nElements==0) return true;else return false;};
 	bool IsInImage(int x,int y) const {if(x>=0 && x<imWidth && y>=0 && y<imHeight) return true; else return false;};
 
@@ -91,7 +91,7 @@ public:
 
 	bool matchDimension (int width,int height,int nchannels) const;
 
-	inline void setDerivative(bool isDerivativeImage=true){IsDerivativeImage=isDerivativeImage;};
+	void setDerivative(bool isDerivativeImage=true){IsDerivativeImage=isDerivativeImage;};
 
 	bool BoundaryCheck() const;
 	// function to move this image to another one
@@ -467,7 +467,8 @@ Image<T>::Image(int width,int height,int nchannels)
 	imWidth=width;
 	imHeight=height;
 	nChannels=nchannels;
-	computeDimension();
+	nElements=0;
+	Image<T>::computeDimension();
 	pData=nullptr;
 	pData=new T[nElements];
 	if(nElements>0)
@@ -479,7 +480,7 @@ template <class T>
 Image<T>::Image(const T& value,int _width,int _height,int _nchannels)
 {
 	pData=nullptr;
-	allocate(_width,_height,_nchannels);
+	Image<T>::allocate(_width,_height,_nchannels);
 	setValue(value);
 }
 
@@ -526,7 +527,7 @@ Image<T>::Image(const Image<T>& other)
 {
 	imWidth=imHeight=nChannels=nElements=0;
 	pData=nullptr;
-	copyData(other);
+	Image<T>::copyData(other);
 }
 
 //------------------------------------------------------------------------------------------
@@ -641,12 +642,9 @@ Image<T>& Image<T>::operator=(const Image<T>& other)
 }
 
 template <class T>
-bool Image<T>::IsFloat() const
+constexpr bool Image<T>::IsFloat()
 {
-	if(typeid(T)==typeid(float) || typeid(T)==typeid(double) || typeid(T)==typeid(long double))
-		return true;
-	else
-		return false;
+	return std::is_floating_point_v<T>;
 }
 
 template <class T>
@@ -1168,7 +1166,7 @@ void Image<T>::GaussianSmoothing(Image<T1>& image,double sigma,int fsize) const
 	// apply filtering
 	imfilter_hv(image,gFilter,fsize,gFilter,fsize);
 
-	delete gFilter;
+	delete[] gFilter;
 }
 
 //------------------------------------------------------------------------------------------
@@ -1195,7 +1193,7 @@ void Image<T>::GaussianSmoothing_transpose(Image<T1>& image,double sigma,int fsi
 	// apply filtering
 	imfilter_hv_transpose(image,gFilter,fsize,gFilter,fsize);
 
-	delete gFilter;
+	delete[] gFilter;
 }
 
 
@@ -1299,7 +1297,7 @@ void Image<T>::imfilter_hv(Image<T1> &image, const double *hfilter, int hfsize, 
 	pTempBuffer=new T1[nElements];
 	ImageProcessing::hfiltering(pData,pTempBuffer,imWidth,imHeight,nChannels,hfilter,hfsize);
 	ImageProcessing::vfiltering(pTempBuffer,image.data(),imWidth,imHeight,nChannels,vfilter,vfsize);
-    delete pTempBuffer;
+    delete[] pTempBuffer;
 }
 
 template <class T>
@@ -2025,8 +2023,8 @@ void Image<T>::BilateralFiltering(Image<T1>& other,int fsize,double filter_sigma
 				result.data()[(i*imWidth+j)*other.nchannels()]=pBuffer[k]/totalWeight;
 		}
 	other.copyData(result);
-	delete pBuffer;
-	delete pSpatialWeight;
+	delete[] pBuffer;
+	delete[] pSpatialWeight;
 }
 
 
@@ -2083,8 +2081,8 @@ void  Image<T>::imBilateralFiltering(Image<T>& result,int fsize,double filter_si
 				result.data()[offset0+k]=pBuffer[k]/totalWeight;
 
 		}
-	delete pBuffer;
-	delete pSpatialWeight;
+	delete[] pBuffer;
+	delete[] pSpatialWeight;
 	//return result;
 }
 

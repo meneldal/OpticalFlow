@@ -757,7 +757,7 @@ void OpticalFlow::SmoothFlowPDE(const DImage &Im1, const DImage &Im2, DImage &wa
 		}
 
 	}// end of outer fixed point iteration
-	delete rou;
+	delete[] rou;
 }
 
 void OpticalFlow::estGaussianMixture(const DImage& Im1,const DImage& Im2,GaussianMixture& para,double prior)

@@ -114,7 +114,7 @@ void CStochastic::sort(int Number,T* pData,int *pIndex,SortType m_SortType)
 		pIndex[i]=offset_extreme;
 		flag[offset_extreme]=1;
 	}
-	delete flag;
+	delete[] flag;
 }
 
 template <class T>
@@ -396,7 +396,7 @@ void CStochastic::GaussianFiltering(T1* pSrcArray,T2* pDstArray,int NumPoints,in
 			}
 			pDstArray[i*nChannels+l]=temp;
 		}
-	delete pGaussian;
+	delete[] pGaussian;
 }
 
 #endif
