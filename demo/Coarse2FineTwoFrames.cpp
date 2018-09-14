@@ -12,12 +12,13 @@ void main()
 	Im1.imread("demo/car1.jpg");
 	DImage Im2;
 	Im2.imread("demo/car2.jpg");
-	double alpha= 1;
+
+	double alpha=0.012;
 	double ratio=0.5;
 	int minWidth= 40;
 	int nOuterFPIterations = 3;
 	int nInnerFPIterations = 1;
-	int nSORIterations= 20;
+	int nSORIterations= 5;
 	
 	DImage vx,vy,warpI2;
 	OpticalFlow::Coarse2FineFlow(vx,vy,warpI2,Im1,Im2,alpha,ratio,minWidth,nOuterFPIterations,nInnerFPIterations,nSORIterations);
